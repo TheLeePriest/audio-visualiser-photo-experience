@@ -1,0 +1,65 @@
+{
+  "name": "portfolio-frontend",
+  "version": "0.0.0",
+  "description": "A simple boilerplate for a React based project",
+  "main": "index.js",
+  "repository": "git@github.com:TheLeePriest/project-boilerplate.git",
+  "author": "Lee Priest <lpleepriest@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --open",
+    "build": "webpack --mode production",
+    "test": "run-s test:unit test:lint test:coverage",
+    "test:lint": "eslint . --fix",
+    "test:unit": "jest testing/__tests__",
+    "test:watch": "jest testing/__tests__ --watch",
+    "test:coverage": "jest testing/__tests__ --coverage",
+    "test:precommit": "jest testing/__tests__"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix"
+    ]
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-html": "^6.0.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "eslint-plugin-styled-components-config": "^0.0.2",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.2.0",
+    "husky": "^4.2.5",
+    "jest": "^25.5.1",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "lint-staged": "^10.1.7",
+    "npm-run-all": "^4.1.5",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
