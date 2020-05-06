@@ -44,6 +44,27 @@ const StateProvider = ({ children }) => {
                     ...reducerState,
                     ...payload,
                 };
+            case 'setAudioCanvas':
+                return {
+                    ...reducerState,
+                    audioCanvas: payload,
+                };
+            case 'setVideoCanvas':
+                return {
+                    ...reducerState,
+                    videoCanvas: payload,
+                };
+            case 'setVideoCanvasCtx':
+                return {
+                    ...reducerState,
+                    videoCanvasCtx: payload,
+                };
+            case 'setVideoCanvasWithCtx':
+                return {
+                    ...reducerState,
+                    videoCanvas: payload.videoCanvas,
+                    videoCanvasCtx: payload.videoCanvasCtx,
+                };
             case 'reset':
                 return {};
             default:
@@ -55,6 +76,10 @@ const StateProvider = ({ children }) => {
             defaultCanvasHeight: 720,
             audioAnalyser: null,
             audioCanvasCtx: null,
+            audioCanvas: null,
+            videoStream: null,
+            videoCanvas: null,
+            videoCanvasCtx: null,
         },
     );
 
