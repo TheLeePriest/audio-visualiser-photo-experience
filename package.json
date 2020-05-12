@@ -14,7 +14,8 @@
     "test:unit": "jest testing/__tests__",
     "test:watch": "jest testing/__tests__ --watch",
     "test:coverage": "jest testing/__tests__ --coverage",
-    "test:precommit": "jest testing/__tests__"
+    "test:precommit": "jest testing/__tests__",
+    "gh:deploy": "gh-pages -d dist"
   },
   "husky": {
     "hooks": {
@@ -50,6 +51,7 @@
     "eslint-plugin-react-hooks": "^2.5.1",
     "eslint-plugin-styled-components-config": "^0.0.2",
     "file-loader": "^6.0.0",
+    "gh-pages": "^2.2.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.2.0",
     "husky": "^4.2.5",

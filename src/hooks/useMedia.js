@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+const audioContextSupported = window.AudioContext || window.webkitAudioContext || false;
+
 const getStream = async (getAudio, getVideo) => {
     const stream = await navigator.mediaDevices
         .getUserMedia({ audio: getAudio, video: getVideo ? { width: 1280, height: 720 } : false })
@@ -17,9 +19,12 @@ const useMedia = (getAudio = true, getVideo = true) => {
 
     useEffect(() => {
         getStream(getAudio, getVideo).then((stream) => {
-            const audioCtx = new AudioContext();
-            setAudioAnalyser(audioCtx.createAnalyser());
-            setSource(audioCtx.createMediaStreamSource(stream));
+            if (audioContextSupported) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const audioCtx = new AudioContext();
+                setAudioAnalyser(audioCtx.createAnalyser());
+                setSource(audioCtx.createMediaStreamSource(stream));
+            }
             setVideoStream(stream);
         });
     }, []);
