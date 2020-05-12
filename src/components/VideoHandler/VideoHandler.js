@@ -18,9 +18,14 @@ const VideoHandler = () => {
 
     useEffect(() => {
         videoRef.current = document.createElement('video');
+        videoRef.current.setAttribute('autoplay', '');
+        videoRef.current.setAttribute('muted', '');
+        videoRef.current.setAttribute('playsinline', '');
+
         videoCanvasRef.current = document.createElement('canvas');
         videoCanvasRef.current.width = defaultCanvasWidth;
         videoCanvasRef.current.height = defaultCanvasHeight;
+
 
         const videoCtx = videoCanvasRef.current.getContext('2d');
         videoCtx.translate(defaultCanvasWidth, 0);
