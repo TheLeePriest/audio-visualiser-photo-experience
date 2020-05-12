@@ -21,11 +21,16 @@ const VideoHandler = () => {
         videoCanvasRef.current = document.createElement('canvas');
         videoCanvasRef.current.width = defaultCanvasWidth;
         videoCanvasRef.current.height = defaultCanvasHeight;
+
+        const videoCtx = videoCanvasRef.current.getContext('2d');
+        videoCtx.translate(defaultCanvasWidth, 0);
+        videoCtx.scale(-1, 1);
+
         dispatch({
             type: 'setVideoCanvasWithCtx',
             payload: {
                 videoCanvas: videoCanvasRef.current,
-                videoCanvasCtx: videoCanvasRef.current.getContext('2d'),
+                videoCanvasCtx: videoCtx,
             },
         });
     }, []);

@@ -23,42 +23,44 @@ const AudioVisualiser = () => {
         dispatch({ type: 'setAudioCanvas', payload: audioVisualiserCanvasRef.current });
     }, []);
 
-    function drawTimeData() {
-        audioAnalyser.getByteTimeDomainData(timeData);
-        audioCanvasCtx.clearRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
-        audioCanvasCtx.lineWidth = 12;
-        audioCanvasCtx.strokeStyle = '#000000';
-        audioCanvasCtx.beginPath();
-        const sliceWidth = defaultCanvasWidth / bufferLength;
-
-        let x = 0;
-        timeData.forEach((data, i) => {
-            const v = data / 128;
-            const y = (v * defaultCanvasHeight) / 2;
-            if (i === 0) {
-                audioCanvasCtx.moveTo(x, y);
-            } else {
-                audioCanvasCtx.lineTo(x, y);
-            }
-
-            x += sliceWidth;
-        });
-
-        audioCanvasCtx.stroke();
-
-        requestAnimationFrame(() => drawTimeData(timeData));
-    }
+    // function drawTimeData() {
+    //     audioAnalyser.getByteTimeDomainData(timeData);
+    //     audioCanvasCtx.clearRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
+    //     audioCanvasCtx.lineWidth = 12;
+    //     audioCanvasCtx.strokeStyle = '#000000';
+    //     audioCanvasCtx.beginPath();
+    //     const sliceWidth = defaultCanvasWidth / bufferLength;
+    //
+    //     let x = 0;
+    //     timeData.forEach((data, i) => {
+    //         const v = data / 128;
+    //         const y = (v * defaultCanvasHeight) / 2;
+    //         if (i === 0) {
+    //             audioCanvasCtx.moveTo(x, y);
+    //         } else {
+    //             audioCanvasCtx.lineTo(x, y);
+    //         }
+    //
+    //         x += sliceWidth;
+    //     });
+    //
+    //     audioCanvasCtx.stroke();
+    //
+    //     requestAnimationFrame(() => drawTimeData(timeData));
+    // }
 
     function drawFrequency() {
+        audioCanvasCtx.clearRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
         audioAnalyser.getByteFrequencyData(frequencyData);
-        const barWidth = (defaultCanvasWidth / bufferLength) * 2.5;
+        const barWidth = (defaultCanvasWidth / bufferLength) * 3.5;
         let x = 0;
         frequencyData.forEach((amount) => {
             const percent = amount / 255;
-            const [h, s, l] = [360 / (percent * 360) - 0.5, 1, 0.5];
+            const [h, s, l] = [180 / (percent * 180) - 0.5, 2, 0.5];
             const [r, g, b] = hslToRgb(h, s, l);
-            const barHeight = (defaultCanvasHeight * percent) / 2;
-            audioCanvasCtx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            const barHeight = (defaultCanvasHeight * percent) / 1.5;
+
+            audioCanvasCtx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.5)`;
             audioCanvasCtx.fillRect(x, defaultCanvasHeight - barHeight, barWidth, barHeight);
             x += barWidth + 1;
         });
@@ -71,7 +73,7 @@ const AudioVisualiser = () => {
             return;
         }
 
-        drawTimeData(timeData);
+        // drawTimeData(timeData);
         drawFrequency(frequencyData);
     }, [timeData, audioCanvasCtx]);
 

@@ -65,6 +65,12 @@ const StateProvider = ({ children }) => {
                     videoCanvas: payload.videoCanvas,
                     videoCanvasCtx: payload.videoCanvasCtx,
                 };
+            case 'setMainCanvasWithCtx':
+                return {
+                    ...reducerState,
+                    mainCanvas: payload.mainCanvas,
+                    mainCanvasCtx: payload.mainCanvasCtx,
+                };
             case 'reset':
                 return {};
             default:

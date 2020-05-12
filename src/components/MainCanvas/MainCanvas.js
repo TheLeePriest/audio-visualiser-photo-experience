@@ -4,12 +4,13 @@ import React, {
 import { store } from '../../store/store';
 
 const MainCanvas = () => {
-    const { state } = useContext(store);
+    const { state, dispatch } = useContext(store);
     const {
         videoCanvas, defaultCanvasWidth, defaultCanvasHeight, audioCanvas,
     } = state;
     const mainCanvasRef = useRef();
     const [ctx, setCtx] = useState(null);
+
 
     const drawToCanvas = useCallback(() => {
         ctx.clearRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
@@ -23,6 +24,14 @@ const MainCanvas = () => {
         mainCanvasRef.current.width = defaultCanvasWidth;
         mainCanvasRef.current.height = defaultCanvasHeight;
         setCtx(mainCanvasRef.current.getContext('2d'));
+
+        dispatch({
+            type: 'setMainCanvasWithCtx',
+            payload: {
+                mainCanvas: mainCanvasRef.current,
+                mainCanvasCtx: mainCanvasRef.current.getContext('2d'),
+            },
+        });
     }, []);
 
     useEffect(() => {
