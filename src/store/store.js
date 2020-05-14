@@ -86,6 +86,7 @@ const StateProvider = ({ children }) => {
             videoStream: null,
             videoCanvas: null,
             videoCanvasCtx: null,
+            aspectRatio: 1 / 1,
         },
     );
 
