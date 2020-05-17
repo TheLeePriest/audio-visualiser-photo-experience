@@ -78,8 +78,8 @@ const StateProvider = ({ children }) => {
             }
         },
         {
-            defaultCanvasWidth: 1280,
-            defaultCanvasHeight: 720,
+            defaultCanvasWidth: 1920,
+            defaultCanvasHeight: 1080,
             audioAnalyser: null,
             audioCanvasCtx: null,
             audioCanvas: null,
@@ -87,6 +87,7 @@ const StateProvider = ({ children }) => {
             videoCanvas: null,
             videoCanvasCtx: null,
             aspectRatio: 1 / 1,
+            theme: 'lightTheme',
         },
     );
 

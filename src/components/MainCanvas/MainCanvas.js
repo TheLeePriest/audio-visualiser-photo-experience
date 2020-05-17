@@ -1,45 +1,75 @@
 import React, {
     useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
+import styled from 'styled-components';
 import { store } from '../../store/store';
+
+const MainCanvasWrapper = styled.div`
+    width: 100%;
+`;
 
 const MainCanvas = () => {
     const { state, dispatch } = useContext(store);
     const {
         videoCanvas, defaultCanvasWidth, defaultCanvasHeight, audioCanvas, aspectRatio,
     } = state;
-    const mainCanvasRef = useRef();
+    const mainCanvasRef = useRef(null);
+    const mainCanvasWrapperRef = useRef(null);
     const [ctx, setCtx] = useState(null);
-
+    const [wrapperWidth, setWrapperWidth] = useState(0);
 
     const drawToCanvas = useCallback(() => {
         ctx.clearRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
 
-        // get the aspect ratio of the input image
-        const inputImageAspectRatio = defaultCanvasWidth / defaultCanvasHeight;
+        const inputWidth = defaultCanvasWidth;
+        const inputHeight = defaultCanvasHeight;
+        const inputImageAspectRatio = inputWidth / inputHeight;
+        let outputWidth = inputWidth;
+        let outputHeight = inputHeight;
 
-        // if it's bigger than our target aspect ratio
-        let outputWidth = defaultCanvasWidth;
-        let outputHeight = defaultCanvasHeight;
         if (inputImageAspectRatio > aspectRatio) {
-            outputWidth = defaultCanvasHeight * aspectRatio;
+            outputWidth = inputHeight * aspectRatio;
         } else if (inputImageAspectRatio < aspectRatio) {
-            outputHeight = defaultCanvasWidth / aspectRatio;
+            outputHeight = inputWidth / aspectRatio;
         }
 
-        // calculate the position to draw the image at
-        const outputX = (outputWidth - defaultCanvasWidth) * 0.5;
-        const outputY = (outputHeight - defaultCanvasHeight) * 0.5;
+        const outputX = (outputWidth - inputWidth) * 0.5;
+        const outputY = (outputHeight - inputHeight) * 0.5;
 
-        ctx.drawImage(videoCanvas, outputX, outputY, defaultCanvasWidth, defaultCanvasHeight);
-        ctx.drawImage(audioCanvas, outputX, outputY, defaultCanvasWidth, defaultCanvasHeight);
+        ctx.drawImage(
+            videoCanvas,
+            -outputX,
+            outputY,
+            outputWidth,
+            outputHeight,
+            0,
+            0, defaultCanvasWidth, defaultCanvasHeight,
+        );
+
+        ctx.drawImage(
+            audioCanvas,
+            -outputX,
+            outputY,
+            outputWidth,
+            outputHeight,
+            0, 0, defaultCanvasWidth, defaultCanvasHeight,
+        );
         requestAnimationFrame(drawToCanvas);
     }, [ctx, videoCanvas]);
 
+    useEffect(() => {
+        if (!mainCanvasWrapperRef.current) {
+            return;
+        }
+
+        const { width } = mainCanvasWrapperRef.current.getBoundingClientRect();
+        setWrapperWidth(width);
+    }, [mainCanvasWrapperRef.current]);
 
     useEffect(() => {
         mainCanvasRef.current.width = defaultCanvasWidth;
         mainCanvasRef.current.height = defaultCanvasHeight;
+        mainCanvasRef.current.setAttribute('style', `width:${wrapperWidth}px; height:${wrapperWidth / aspectRatio}px`);
         setCtx(mainCanvasRef.current.getContext('2d'));
 
         dispatch({
@@ -49,7 +79,7 @@ const MainCanvas = () => {
                 mainCanvasCtx: mainCanvasRef.current.getContext('2d'),
             },
         });
-    }, []);
+    }, [wrapperWidth]);
 
     useEffect(() => {
         if (!ctx || !videoCanvas) {
@@ -59,7 +89,13 @@ const MainCanvas = () => {
         drawToCanvas();
     }, [ctx, videoCanvas]);
 
-    return <canvas ref={mainCanvasRef} />;
+    return (
+        <MainCanvasWrapper
+            ref={mainCanvasWrapperRef}
+        >
+            <canvas ref={mainCanvasRef} />
+        </MainCanvasWrapper>
+    );
 };
 
 export default MainCanvas;

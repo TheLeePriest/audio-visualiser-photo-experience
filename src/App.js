@@ -1,13 +1,17 @@
 import React, { useContext, useEffect } from 'react';
+import { ThemeProvider } from 'styled-components';
 import AudioVisualiser from './components/AudioVisualiser/AudioVisualiser';
 import VideoHandler from './components/VideoHandler/VideoHandler';
 import useMedia from './hooks/useMedia';
 import { store } from './store/store';
 import MainCanvas from './components/MainCanvas/MainCanvas';
+import * as themes from './styled/theme';
+import GlobalStyles from './globalStyles';
 
 
 const App = () => {
     const { dispatch, state } = useContext(store);
+    const { theme } = state;
     const [audioAnalyser, timeData, frequencyData, bufferLength, videoStream] = useMedia();
 
     function downloadBlob(blob, filename) {
@@ -53,12 +57,13 @@ const App = () => {
     };
 
     return (
-        <div>
+        <ThemeProvider theme={themes[theme]}>
+            <GlobalStyles />
             <AudioVisualiser />
             <VideoHandler />
             <MainCanvas />
             <button onClick={() => takePhoto()} type="button">Take photo!</button>
-        </div>
+        </ThemeProvider>
     );
 };
 
