@@ -35,19 +35,35 @@ const MainCanvas = () => {
 
         const outputX = (outputWidth - inputWidth) * 0.5;
         const outputY = (outputHeight - inputHeight) * 0.5;
-
-        ctx.drawImage(
+        const tempCanvas = document.createElement('canvas');
+        const tempCanvasCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = defaultCanvasWidth;
+        tempCanvas.height = defaultCanvasHeight;
+        tempCanvasCtx.drawImage(
             videoCanvas,
-            -outputX,
-            outputY,
-            outputWidth,
-            outputHeight,
             0,
-            0, defaultCanvasWidth, defaultCanvasHeight,
+            0,
+            defaultCanvasWidth,
+            defaultCanvasHeight,
+            0,
+            0,
+            defaultCanvasWidth,
+            defaultCanvasHeight,
+        );
+        tempCanvasCtx.drawImage(
+            audioCanvas,
+            0,
+            0,
+            defaultCanvasWidth,
+            defaultCanvasHeight,
+            0,
+            0,
+            defaultCanvasWidth,
+            defaultCanvasHeight,
         );
 
         ctx.drawImage(
-            audioCanvas,
+            tempCanvas,
             -outputX,
             outputY,
             outputWidth,

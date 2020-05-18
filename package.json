@@ -15,7 +15,7 @@
     "test:watch": "jest testing/__tests__ --watch",
     "test:coverage": "jest testing/__tests__ --coverage",
     "test:precommit": "jest testing/__tests__",
-    "gh:deploy": "gh-pages -d dist"
+    "gh:deploy": "yarn run build && gh-pages -d dist"
   },
   "husky": {
     "hooks": {
